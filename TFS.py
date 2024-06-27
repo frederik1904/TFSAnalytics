@@ -213,7 +213,19 @@ class TFS:
         url = f'{self.get_base_path()}/git/repositories/{self._config.get_tfs_repo()}/pullrequests/{commit_id}/threads?api-version=7.0'
         r = self._session.get(url=url, headers=self.prepare_headers())
         if r.status_code == 200:
-            print(r.json())
             return PullRequestComments(r.json(), commit_id)
+
+        raise Exception(f'Failed to get pull request with {r.json()}')
+
+    # https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-requests/get-pull-request?view=azure-devops-rest-7.0
+    def get_pullrequests_ids(self, target_branch: str) -> [str]:
+        url = f'{self.get_base_path()}/git/repositories/{self._config.get_tfs_repo()}/pullrequests/?searchCriteria.targetRefName={target_branch}&api-version=7.0'
+        r = self._session.get(url=url, headers=self.prepare_headers())
+        if r.status_code == 200:
+            result = []
+            for pullrequest in r.json()['value']:
+                result.append(pullrequest['pullRequestId'])
+
+            return result
 
         raise Exception(f'Failed to get pull request with {r.json()}')
