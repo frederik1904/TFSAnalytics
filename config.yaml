@@ -1,0 +1,10 @@
+KeePass:
+    path: "../tools.kdbx"
+    password: "1234" #leave blank and the software will ask you on run
+    
+TFS:
+    KeePassEntry: "TFS_TOKEN"
+    organization: "frederik1904"
+    baseUrl: "https://dev.azure.com" # / is always added by the code, leave it out
+    repo: "TestingStuff"
+    project: "TestingStuff"
